@@ -86,6 +86,7 @@ function init() {
         reader.addEventListener("load", function (event) {
           material.map.image.src = event.target.result;
           material.map.needsUpdate = true;
+          console.log("Switched image.");
         });
         reader.readAsDataURL(event.dataTransfer.files[0]);
       }
@@ -232,9 +233,8 @@ function changeImage(direction) {
 
   const pano = images[newIndex].name;
   currentImage = pano;
-  const texture = new THREE.TextureLoader().load(`textures/${pano}`);
-  const material = new THREE.MeshBasicMaterial({ map: texture });
-  mesh.material = material;
+  mesh.material.map.image.src = `textures/${pano}`;
+  mesh.material.map.needsUpdate = true;
 
   console.log(`Set current image to ${pano}`);
 }
