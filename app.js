@@ -1,6 +1,7 @@
 import * as THREE from "../build/three.module.js";
 
-let camera, scene, renderer;
+let camera, scene, renderer, mesh, currentImage;
+let images = await getImageList();
 
 let isUserInteracting = false,
   onPointerDownMouseX = 0,
@@ -14,6 +15,13 @@ let isUserInteracting = false,
 
 init();
 animate();
+document.getElementById("info-btn").addEventListener("click", toggleInfo);
+document
+  .getElementById("next-btn")
+  .addEventListener("click", () => changeImage("next"));
+document
+  .getElementById("previous-btn")
+  .addEventListener("click", () => changeImage("previous"));
 
 function init() {
   const container = document.getElementById("container");
@@ -31,21 +39,12 @@ function init() {
   // invert the geometry on the x-axis so that all of the faces point inward
   geometry.scale(-1, 1, 1);
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const panoParam = urlParams.get("pano");
-  let pano;
-  if (panoParam) {
-    pano = `textures/${panoParam}`;
-    console.log(`Retrieved ${panoParam}`);
-  } else {
-    pano = "textures/2294472375_24a3b8ef46_o.jpg";
-    console.log("No pano query param provided; setting default.");
-  }
-
-  const texture = new THREE.TextureLoader().load(pano);
+  const pano = getPanoNameFromQueryParams();
+  currentImage = pano;
+  const texture = new THREE.TextureLoader().load(`textures/${pano}`);
   const material = new THREE.MeshBasicMaterial({ map: texture });
 
-  const mesh = new THREE.Mesh(geometry, material);
+  mesh = new THREE.Mesh(geometry, material);
 
   scene.add(mesh);
 
@@ -100,6 +99,22 @@ function init() {
   //
 
   window.addEventListener("resize", onWindowResize);
+}
+
+function getPanoNameFromQueryParams() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const panoParam = urlParams.get("pano");
+  let panoName;
+
+  if (panoParam) {
+    panoName = panoParam;
+    console.log(`Pano query param = ${panoParam}`);
+  } else {
+    panoName = "default.jpg";
+    console.log("No pano query param provided; setting default.");
+  }
+
+  return panoName;
 }
 
 function onWindowResize() {
@@ -169,4 +184,57 @@ function update() {
   camera.lookAt(x, y, z);
 
   renderer.render(scene, camera);
+}
+
+function toggleInfo() {
+  const infoDiv = document.getElementById("info-div");
+
+  if (infoDiv.style.display === "flex") {
+    infoDiv.style.display = "none";
+  } else {
+    infoDiv.style.display = "flex";
+    infoDiv.style.flexDirection = "column";
+  }
+}
+
+async function getImageList() {
+  const res = await fetch("textures/_images.json");
+  const imageList = await res.json();
+  return imageList;
+}
+
+function changeImage(direction) {
+  // direction = next or previous
+
+  let currentIndex = images.findIndex((image) => image.name === currentImage);
+  let newIndex;
+
+  if (currentIndex === -1) {
+    console.log("Current image name was not found in the image list.");
+    return;
+  }
+
+  if (direction === "next") {
+    newIndex = currentIndex + 1;
+  } else if (direction === "previous") {
+    newIndex = currentIndex - 1;
+  } else {
+    console.log("Incorrect direction provided. Specify next or previous.");
+    return;
+  }
+
+  if (newIndex < 0 || newIndex === images.length) {
+    console.log(
+      "At the index range limit; cannot change image in this direction."
+    );
+    return;
+  }
+
+  const pano = images[newIndex].name;
+  currentImage = pano;
+  const texture = new THREE.TextureLoader().load(`textures/${pano}`);
+  const material = new THREE.MeshBasicMaterial({ map: texture });
+  mesh.material = material;
+
+  console.log(`Set current image to ${pano}`);
 }

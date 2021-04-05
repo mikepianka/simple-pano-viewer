@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>three.js webgl - equirectangular panorama</title>
+    <title>Simple Pano Viewer</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -10,21 +10,31 @@
     <link type="text/css" rel="stylesheet" href="main.css" />
   </head>
   <body>
-    <div id="container"></div>
-    <div id="info">
-      <a href="https://threejs.org" target="_blank" rel="noopener"
-        >three.js webgl</a
-      >
-      - equirectangular panorama demo. photo by
-      <a
-        href="http://www.flickr.com/photos/jonragnarsson/2294472375/"
-        target="_blank"
-        rel="noopener"
-        >Jón Ragnarsson</a
-      >.<br />
-      drag equirectangular texture into the page.
+    <div id="container">
+      <a id="previous-btn" title="Previous Image">
+        <img
+          src="icons/bxs-chevron-left.svg"
+          width="100px"
+          class="slideshow-btn"
+        />
+      </a>
+      <a id="next-btn" title="Next Image">
+        <img
+          src="icons/bxs-chevron-right.svg"
+          width="100px"
+          class="slideshow-btn"
+        />
+      </a>
+      <a id="info-btn" href="#">
+        <img src="icons/bx-help-circle.svg" width="50px" />
+      </a>
+      <div id="info-div">
+        <h2>Simple Pano Viewer</h2>
+        <h3>A simple panorama viewer using three.js</h3>
+        <p>Cycle through images with the left & right arrows</p>
+        <p>or drag and drop your own panoramic .jpg</p>
+      </div>
     </div>
-
     <script type="module" src="app.js"></script>
   </body>
 </html>

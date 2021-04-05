@@ -3,85 +3,51 @@ body {
   background-color: #000;
   color: #fff;
   font-family: Monospace;
-  font-size: 13px;
-  line-height: 24px;
+  font-size: 16px;
   overscroll-behavior: none;
 }
 
-a {
-  color: #ff0;
-  text-decoration: none;
+#container {
+  user-select: none;
 }
 
-a:hover {
-  text-decoration: underline;
-}
-
-button {
+.slideshow-btn:hover {
   cursor: pointer;
-  text-transform: uppercase;
+  filter: invert(100%);
 }
 
-#info {
+#previous-btn {
+  z-index: 10;
   position: absolute;
-  top: 0px;
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-  text-align: center;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  pointer-events: none;
-  z-index: 1; /* TODO Solve this in HTML */
-}
-
-a,
-button,
-input,
-select {
-  pointer-events: auto;
-}
-
-.dg.ac {
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  z-index: 2 !important; /* TODO Solve this in HTML */
-}
-
-#overlay {
-  position: absolute;
-  font-size: 16px;
-  z-index: 2;
-  top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background: rgba(0, 0, 0, 0.7);
+  top: 50%;
 }
 
-#overlay button {
-  background: transparent;
-  border: 0;
-  border: 1px solid rgb(255, 255, 255);
-  border-radius: 4px;
-  color: #ffffff;
-  padding: 12px 18px;
-  text-transform: uppercase;
+#next-btn {
+  z-index: 10;
+  position: absolute;
+  right: 0;
+  top: 50%;
+}
+
+#info-btn {
+  z-index: 10;
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+}
+
+#info-btn:hover {
   cursor: pointer;
+  filter: invert(100%);
 }
 
-#notSupported {
-  width: 50%;
-  margin: auto;
-  background-color: #f00;
-  margin-top: 20px;
+#info-div {
+  display: none;
+  position: absolute;
+  left: 10px;
+  bottom: 75px;
   padding: 10px;
+  border: 1px solid white;
+  background-color: black;
 }
