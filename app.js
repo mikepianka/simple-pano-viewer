@@ -54,7 +54,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
 
-  container.style.touchAction = "none";
+  container.style.touchAction = "pinch-zoom";
   container.addEventListener("pointerdown", onPointerDown);
 
   document.addEventListener("wheel", onDocumentMouseWheel);
