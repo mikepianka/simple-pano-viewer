@@ -1,7 +1,6 @@
 import * as THREE from "../build/three.module.js";
 
-let camera, scene, renderer, mesh, currentImage;
-let images = await getImageList();
+let camera, scene, renderer, mesh, currentImage, images;
 
 let isUserInteracting = false,
   onPointerDownMouseX = 0,
@@ -22,6 +21,7 @@ document
 document
   .getElementById("previous-btn")
   .addEventListener("click", () => changeImage("previous"));
+getImageList();
 
 function init() {
   const container = document.getElementById("container");
@@ -41,6 +41,7 @@ function init() {
 
   const pano = getPanoNameFromQueryParams();
   currentImage = pano;
+  updateCurrentImagePopup(pano);
   const texture = new THREE.TextureLoader().load(`textures/${pano}`);
   const material = new THREE.MeshBasicMaterial({ map: texture });
 
@@ -201,7 +202,7 @@ function toggleInfo() {
 async function getImageList() {
   const res = await fetch("textures/_images.json");
   const imageList = await res.json();
-  return imageList;
+  images = imageList;
 }
 
 function changeImage(direction) {
@@ -228,13 +229,20 @@ function changeImage(direction) {
     console.log(
       "At the index range limit; cannot change image in this direction."
     );
+    alert("You have reached the last photo in this direction.");
     return;
   }
 
   const pano = images[newIndex].name;
   currentImage = pano;
+  updateCurrentImagePopup(pano);
   mesh.material.map.image.src = `textures/${pano}`;
   mesh.material.map.needsUpdate = true;
 
   console.log(`Set current image to ${pano}`);
+}
+
+function updateCurrentImagePopup(imageName) {
+  const currentImageEl = document.getElementById("current-image");
+  currentImageEl.innerText = `Current image: ${imageName}`;
 }

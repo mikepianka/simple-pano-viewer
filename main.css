@@ -43,11 +43,13 @@ body {
 }
 
 #info-div {
+  z-index: 11;
   display: none;
   position: absolute;
   left: 10px;
   bottom: 75px;
   padding: 10px;
+  max-width: 350px;
   border: 1px solid white;
   background-color: black;
 }
